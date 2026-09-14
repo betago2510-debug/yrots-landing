@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>글로그램 / GLOGRAM</title>
+<meta name="description" content="의사, 한의사, 변호사, 정치인 등 전문직의 소중한 경험을 경력 20년차 이상의 편집자가 인터뷰 후 원고 집필, 편집을 거쳐 책으로 만듭니다.">
+<meta name="theme-color" content="#F4EDE1">
+
+<!-- OG -->
+<meta property="og:title" content="글로그램 / GLOGRAM">
+<meta property="og:description" content="의사, 한의사, 변호사, 정치인 등 전문직의 소중한 경험을 경력 20년차 이상의 편집자가 인터뷰 후 원고 집필, 편집을 거쳐 책으로 만듭니다.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="/og-image.jpg">
+
+<!-- 파비콘: /favicon.ico, /apple-touch-icon.png 파일을 실제로 준비해 두십시오 -->
+<link rel="icon" href="/favicon.ico">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+<!-- 폰트: 본문·UI Pretendard / 제목·인용 Nanum Myeongjo. font-display: swap 필수 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+
+<!-- GA4: 실제 측정 ID로 교체하십시오 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=[ GA4_MEASUREMENT_ID ]"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){ dataLayer.push(arguments); }
+  gtag('js', new Date());
+  gtag('config', '[ GA4_MEASUREMENT_ID ]');
+</script>
+
+<style>
+/* ============ 0. 디자인 토큰 ============ */
+:root{
+  --paper:#F4EDE1;
+  --ink:#5A554D;
+  --heading:#1F1D1A;
+  --ink-soft:#5A6873;
+  --vermilion:#A8322A;
+  --rule:#DFD5C4;
+  --ink-bg:#14212B;
+  --font-display: 'Noto Serif KR', serif;
+  --font-body:'Pretendard',-apple-system,BlinkMacSystemFont,sans-serif;
+}
+
+/* ============ 1. 리셋 ============ */
+*, *::before, *::after{ box-sizing:border-box; }
+html{ -webkit-text-size-adjust:100%; }
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--font-body);
+  font-weight:600;
+  font-size:17px;
+  line-height:1.75;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3{ margin:0; font-family:var(--font-display); font-weight:700; color:var(--heading); }
+p{ margin:0 0 1.1em; }
+p:last-child{ margin-bottom:0; }
+img{ max-width:100%; display:block; }
+a{ color:inherit; }
+ul,ol,dl{ margin:0; padding:0; }
+li{ list-style:none; }
+
+/* 키보드 포커스 */
+:focus-visible{ outline:2px solid var(--vermilion); outline-offset:3px; }
+
+@media (prefers-reduced-motion: reduce){
+  *{ animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; }
+}
+
+/* ============ 2. 레이아웃 ============ */
+.container{ max-width:760px; margin:0 auto; padding:0 20px; }
+/* 본문 컨테이너 폭 재계산: 폰트 확대(17px/20px, 600) + 한 줄 16자 기준 재산정 */
+.prose{ max-width:440px; }
+.narrow{ max-width:380px; }
+
+section{ padding:3rem 0; }
+section.divider{ border-top:1px solid var(--rule); }
+
+.center{ text-align:center; }
+
+/* ============ 3. 타이포그래피 스케일 ============ */
+h2.section-title{ font-size:24px; line-height:1.4; margin-bottom:1.2rem; }
+.lead{ font-family:var(--font-body); font-weight:600; font-size:17px; line-height:1.7; }
+.caption{ font-size:13px; line-height:1.6; color:var(--ink-soft); font-weight:400; }
+
+@media (min-width:768px){
+  h2.section-title{ font-size:34px; }
+  .lead{ font-size:20px; }
+  body{ font-size:20px; }
+  .caption{ font-size:14px; }
+}
+
+/* ============ 4. 유틸: 반응형 표시 전환 (브레이크포인트 768px 하나) ============ */
+.desktop-only{ display:none; }
+
+/* ============ 5. 스크롤 진행바 ============ */
+#progress{
+  position: fixed;
+  top: 0; 
+  left: 0;
+  height: 2px; 
+  background: var(--vermilion);
+  width: 0; 
+  z-index: 10;
+}
+
+/* ============ 6. 배너 이미지 (헤드 이미지 / 섹션 배너) ============ */
+.banner-image{ 
+  margin-top: 0;
+  margin-left: -20px;
+  margin-right: -20px;
+  width: calc(100% + 40px);
+}
+.banner-image img{ 
+  width: 100%;
+  max-width: none !important;
+  height: auto; 
+  display: block; 
+}
+
+/* 섹션 맨 위에 오는 배너 이미지를 상단 분할 영역에 딱 붙이는 스타일 */
+.banner-first{
+  margin-top: -3rem !important; /* 섹션의 기본 패딩 4rem을 상쇄 */
+}
+
+/* 색 반전 섹션(섹션 3)의 패딩은 3rem이므로 3rem 상쇄 */
+.invert .banner-first{
+  margin-top: -3rem !important;
+}
+
+/* 태블릿 및 PC 화면 (768px 이상) */
+@media (min-width: 768px){
+  .banner-image{
+    margin-left: 0;
+    margin-right: 0;
+    width: 100%;
+  }
+}
+
+/* ============ 7. 버튼 ============ */
+.btn-primary{
+  display:inline-block;
+  background:var(--vermilion);
+  color:var(--paper);
+  font-family:var(--font-body);
+  font-weight:600;
+  font-size:16px;
+  text-decoration:none;
+  padding:14px 28px;
+  border:none;
+  cursor:pointer;
+  width:auto;
+}
+@media (max-width:767px){
+  #apply .btn-primary{ display:block; width:100%; text-align:center; }
+}
+
+/* ============ 8. 원천 콘텐츠 — 색 반전 블록 (섹션 3 유일) ============ */
+.invert{
+  background:var(--ink-bg);
+  color:var(--paper);
+  padding:3rem 0;
+  margin:0;
+}
+.invert h2{ color:var(--paper); }
+.invert p{ color:rgba(255,255,255,0.9); }
+.invert table th{ color:var(--paper); }
+.invert table td{ color:rgba(255,255,255,0.82); }
+.invert table tr{ border-color:rgba(255,255,255,0.18); }
+.invert .source-list dt{ color:var(--paper); }
+.invert .source-list dd{ color:rgba(255,255,255,0.82); }
+
+/* ============ 9. 표 (구분선만, 테두리 없음) ============ */
+table{ width:100%; border-collapse:collapse; margin:1.5rem 0; }
+th, td{ text-align:left; padding:0.9rem 0.6rem 0.9rem 0; border-bottom:1px solid var(--rule); vertical-align:top; }
+th{ font-weight:600; }
+tr:last-child th, tr:last-child td{ border-bottom:none; }
+
+.source-table td:first-child{ font-weight:600; white-space:nowrap; width:32%; }
+/* 첫 행과 마지막 행의 기본 굵기 */
+.burden-table tr:first-child td{ font-weight:600; }
+.burden-table tr:last-child td{ font-weight:700; }
+
+/* 0매와 약 10시간(두 번째 열: td:last-child)만 적갈색 처리 */
+.burden-table tr:first-child td:last-child,
+.burden-table tr:last-child td:last-child{
+  color: var(--vermilion);
+}
+
+.burden-table td:first-child{ width:55%; }
+
+.source-list > div, .burden-list > div{ padding:0.9rem 0; border-bottom:1px solid var(--rule); }
+.source-list > div:last-child, .burden-list > div:last-child{ border-bottom:none; }
+.source-list dt, .burden-list dt{ font-weight:600; margin-bottom:0.3rem; }
+.source-list dd, .burden-list dd{ margin:0; color:var(--ink-soft); }
+.burden-list > div:first-child dt, .burden-list > div:first-child dd{ color:var(--vermilion); font-weight:600; }
+.burden-list > div:last-child dt, .burden-list > div:last-child dd{ font-weight:700; color:var(--heading); }
+
+/* ============ 10. 인용 블록 (편집자) ============ */
+.quote-block{
+  border-left:5px solid var(--vermilion);
+  padding-left:1.2rem;
+  margin:1.8rem 0;
+  font-family:var(--font-display);
+  font-size:17px;
+  line-height:1.7;
+  color:var(--heading);
+}
+
+@media (min-width: 768px){
+  .quote-block{ font-size: 21px; } /* PC 화면 크기 */
+}
+
+/* ============ 11. 진행 방식 — 세로 스텝 ============ */
+.steps{ margin-top:2rem; }
+.step{ display:flex; gap:1.2rem; padding:1.4rem 0; border-bottom:1px solid var(--rule); }
+.step:last-of-type{ border-bottom:none; }
+.step-num{
+  font-family:var(--font-display); font-weight:700; font-size:22px;
+  color:var(--vermilion); flex-shrink:0; width:2rem;
+}
+.step-body h3{ 
+  font-family: var(--font-body); 
+  font-weight: 600; /* 제목인 만큼 조금 더 또렷하게 강조하려면 700, 본문과 동일하게 하려면 600 */
+  font-size: 1em;   /* 본문 기본 글자 크기(모바일 17px, PC 20px)와 완벽히 동일하게 맞춤 */
+  margin-bottom: 0.4rem; 
+  color: var(--heading); 
+}
+.step-body p{ color:var(--ink-soft); font-weight:600; }
+.steps-note{ margin-top:1.5rem; color:var(--ink-soft); font-weight:600; }
+
+/* ============ 12. 편집자 (모바일/PC 모두 가로 배치 유지) ============ */
+.editor-row{ 
+  margin-top: 1.5rem; 
+}
+.editor-meta{ color: var(--ink-soft); margin-bottom: 0.3rem; font-weight: 600; }
+.editor-fact{ margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--rule); }
+.editor-fact p:first-child{ font-weight: 600; }
+
+/* ============ 13. 가격 ============ */
+.price-table th, .price-table td{ text-align:center; }
+.price-table th:first-child, .price-table td:first-child{ text-align:left; }
+.price-table th.highlight, .price-table td.highlight{
+  border-left:1px solid var(--vermilion);
+  border-right:1px solid var(--vermilion);
+  background:rgba(168,50,42,0.05);
+}
+.price-table td.plan-price{ font-weight:700; font-size:18px; color:var(--heading); }
+
+/* --- 모바일 작은 3단 표 (index3 베이지/브라운 테마 적용) --- */
+.mini-pricing-table {
+  display: flex;
+  width: 100%;
+  margin-top: 1.5rem;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+}
+.mini-col {
+  flex: 1;
+  text-align: center;
+  padding: 1.5rem 0.4rem;
+  border-right: 1px solid var(--rule);
+  background: var(--paper);
+}
+.mini-col:last-child {
+  border-right: none;
+}
+.mini-col.highlight {
+  border-left: 1px solid var(--vermilion);
+  border-right: 1px solid var(--vermilion);
+  background: rgba(168,50,42,0.05);
+}
+.mini-col h3 {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 15px;
+  margin-bottom: 0.8rem;
+  color: var(--heading);
+}
+.mini-col .plan-price {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 16px;
+  margin: 0 0 1rem;
+  color: var(--heading);
+}
+.mini-col.highlight .plan-price {
+  color: var(--vermilion);
+}
+.btn-expand {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  background: none;
+  border: none;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--ink);
+  cursor: pointer;
+  padding: 4px 0;
+  line-height: 1;
+}
+.mini-col.highlight .btn-expand {
+  color: var(--vermilion);
+}
+
+/* --- 모바일 단일 상세 카드 (index3 색상 적용) --- */
+.single-plan-view {
+  display: none; /* 기본 숨김 */
+  width: 100%;
+  padding: 2rem 0.5rem 1.5rem;
+  background: var(--paper);
+}
+.single-plan-view.active {
+  display: block; /* 선택 시 활성화 */
+}
+.single-plan-view .detail-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 22px;
+  color: var(--heading);
+  margin-bottom: 0.4rem;
+}
+.single-plan-view .detail-price {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 28px;
+  color: var(--vermilion);
+  margin-bottom: 1.5rem;
+}
+.single-plan-view dl {
+  width: 100%;
+  margin: 0;
+}
+.single-plan-view dl div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--rule);
+  font-size: 15px;
+}
+.single-plan-view dt {
+  color: var(--heading);
+  font-weight: 600;
+  flex-shrink: 0;
+}
+.single-plan-view dd {
+  text-align: right;
+  margin: 0;
+  color: var(--ink);
+  word-break: keep-all;
+}
+
+/* 접기 버튼 (index3 베이지 톤과 어울리는 스타일) */
+.btn-plan-close {
+  display: block;
+  width: 100%;
+  margin-top: 1.8rem;
+  padding: 13px 0;
+  background: rgba(0, 0, 0, 0.04);
+  color: var(--heading);
+  border: 1px solid var(--rule);
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+}
+.btn-plan-close:active {
+  background: rgba(0, 0, 0, 0.08);
+}
+
+/* 기존 `.bulk-block, .payment-block` 부분을 아래 코드로 교체 */
+#pricing .bulk-block, 
+#pricing .payment-block { 
+  margin-top: 2rem; 
+  padding-top: 1.5rem; 
+  border-top: 1px solid var(--rule); 
+}
+
+#pricing .bulk-block h3, 
+#pricing .payment-block h3 { 
+  font-family: var(--font-body); 
+  font-weight: 600; 
+  font-size: 16px; 
+  margin-bottom: 0.6rem; 
+  color: var(--heading); 
+}
+
+/* ▼ 딱 섹션 7 안의 문구들만 줄 간격 좁히기 ▼ */
+#pricing .bulk-block p, 
+#pricing .payment-block p {
+  margin-bottom: 0.3em; /* 문단 아래 간격을 좁게 조절 (원하시면 0.2em~0.5em 사이로 변경 가능) */
+  line-height: 1.45;    /* 줄 간격 슬림하게 조정 */
+}
+
+/* ============ 14. FAQ — <details> 아코디언 ============ */
+details.faq{ border-bottom:1px solid var(--rule); }
+details.faq summary{
+  cursor:pointer; padding:1.2rem 0;
+  font-weight:600; list-style:none;
+  display:flex; justify-content:space-between; align-items:center;
+  gap:1rem; color:var(--heading);
+}
+details.faq summary::-webkit-details-marker{ display:none; }
+details.faq summary::after{ content:"+"; color:var(--ink-soft); font-size:22px; flex-shrink:0; line-height:1; }
+details.faq[open] summary::after{ content:"\2212"; }
+details.faq p{ padding:0 0 1.2rem; color:var(--ink-soft); font-weight:600; }
+
+/* ============ 15. 하단 고정 CTA (모바일 전용) ============ */
+#sticky-cta{ display:none; }
+@media (max-width:767px){
+  #sticky-cta{
+    display:block; position:sticky; bottom:0;
+    background:var(--paper); border-top:1px solid var(--rule);
+    padding:12px 20px calc(12px + env(safe-area-inset-bottom));
+    z-index:9;
+  }
+  #sticky-cta.cta-hidden{ display:none; }
+}
+
+/* ============ 16. 푸터 ============ */
+footer{ padding:3rem 0 2rem; }
+footer .biz{ color:var(--ink-soft); font-size:13px; line-height:1.8; font-weight:400; }
+footer .privacy-link{ display:inline-block; margin-top:1rem; font-size:13px; text-decoration:underline; }
+
+/* ============ 17. 유틸 표시 규칙 (섹션 4 계속) ============
+   컴포넌트별 display 선언(.price-cards의 flex 등)보다 뒤에 와야
+   같은 우선순위에서 이 규칙이 항상 이기고, flex 처럼 block 이 아닌
+   값이 필요한 요소는 클래스를 겹쳐 특이도를 높여 확정합니다. */
+.mobile-only{ display:none; }
+@media (max-width:767px){
+  .mobile-only{ display:block; }
+  .price-cards.mobile-only{ display:flex; }
+}
+@media (min-width:768px){
+  .desktop-only{ display:block; }
+  table.desktop-only{ display:table; }
+}
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+
+<!-- ============ 헤드 이미지 1 (옛 히어로 자리) ============ -->
+<div class="container">
+  <div class="banner-image" style="margin-top:0; margin-bottom:2rem;">
+    <img src="images/이미지1.jpg" alt="GLO:GRAM — 나만의 경험과 지식을 한 권의 책으로">
+  </div>
+</div>
+
+<!-- ============ 섹션 1 — 문제 (원본 섹션 2 이동) ============ -->
+<section id="problem" style="padding-top: 0;">
+  <div class="container">
+    <div class="narrow">
+      <p>실력도, 쌓아온 경험도 다르지만</p>
+      <p>밖에서 보면 모두 비슷합니다.</p>
+      <p>차이를 만드는 결정적 근거, 있습니까?</p>
+    </div>
+    <h2 class="section-title" style="margin-top:2.5rem;">글로그램은<br>신뢰 자산을 만듭니다</h2>
+    <div class="narrow">
+      <p>책에 담기면 무게감이 다릅니다.</p>
+      <p>책 한 권이 당신을 더 빛나게 합니다.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 섹션 2 — 인터뷰 4~8시간이면 충분합니다 (신설 섹션 A) ============ -->
+<section class="divider" id="interview-length">
+  <div class="container">
+    <h2 class="section-title">인터뷰 4~8시간이면<br>충분합니다</h2>
+    <div class="narrow">
+      <p>소중한 경험과 지식을 들려주세요.</p>
+      <p>인터뷰 종류 후 10일이면 초고가 완성됩니다.</p>
+      <p>숙련된 편집자가 원고의 질을 높입니다.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 섹션 3 — 원천 콘텐츠 (색 반전, 페이지 유일) ============ -->
+<section class="invert" id="source">
+  <div class="container">
+    <div class="banner-image banner-first" style="margin-bottom:2rem;">
+      <img src="images/이미지2.jpg" alt="한 번 쓰고 나면, 많은 숙제가 풀립니다">
+    </div>
+    
+    <table class="source-table desktop-only">
+      <thead>
+        <tr>
+         <th style="border-bottom: 1px solid var(--rule);">형태</th>
+         <th style="border-bottom: 1px solid var(--rule);">활용</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>책</td><td>프로필에 남기고, 신뢰의 근거가 됩니다</td></tr>
+        <tr><td>칼럼·블로그</td><td>칼럼, 기고문, 블로그 게시글로 활용합니다</td></tr>
+        <tr><td>유튜브 대본</td><td>이미 정리된 내용이라 촬영만 하면 됩니다</td></tr>
+        <tr><td>강연 자료</td><td>목차가 곧 강연 커리큘럼입니다</td></tr>
+        <tr><td>설명 자료</td><td>힘들게 말로 하던 것을 책이 대신 합니다</td></tr>
+      </tbody>
+    </table>
+
+    <dl class="source-list mobile-only">
+      <div><dt>책</dt><dd>프로필에 남기고, 신뢰의 근거가 됩니다</dd></div>
+      <div><dt>칼럼·블로그</dt><dd>칼럼, 기고문, 블로그 게시글로 활용합니다</dd></div>
+      <div><dt>유튜브 대본</dt><dd>이미 정리된 내용이라 촬영만 하면 됩니다</dd></div>
+      <div><dt>강연 자료</dt><dd>목차가 곧 강연 커리큘럼입니다</dd></div>
+      <div><dt>설명 자료</dt><dd>힘들게 말로 하던 것을 책이 대신 합니다</dd></div>
+    </dl>
+  </div>
+</section>
+
+<!-- ============ 섹션 4 — 저자의 부담 ============ -->
+<section class="divider" id="burden">
+  <div class="container">
+    <h2 class="section-title">저자가 들이는 시간<br>10시간 남짓</h2>
+
+    <table class="burden-table">
+      <tbody>
+        <tr><td>저자가 직접 쓴 원고</td><td>0매</td></tr>
+        <tr><td>상담</td><td>30분</td></tr>
+        <tr><td>인터뷰</td><td>4~8시간 (2~3회)</td></tr>
+        <tr><td>원고 검토</td><td>2~3시간</td></tr>
+        <tr><td>저자 총 투입</td><td>약 10시간</td></tr>
+      </tbody>
+    </table>
+
+    <div style="margin-top:1.6rem;">
+      <p>혼자 쓰면 6개월 넘게 걸립니다.</p>
+      <p>10시간만 투자하십시오.</p>
+      <p>숙련된 편집자가 원고의 질을 높입니다.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 섹션 5 — 진행 방식 ============ -->
+<section class="divider" id="process">
+  <div class="container">
+    <h2 class="section-title">두 가지만 하면 됩니다</h2>
+    <p class="lead">이야기를 들려주고, 집필원고 확인하기</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h3>기획</h3>
+          <p>설문조사 후 상담 30분. 콘셉트를 설계하고 목차 기획안을 만듭니다.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h3>인터뷰</h3>
+          <p>4~8시간 인터뷰를 2~3회로 나누어 진행합니다. 화상 또는 방문 중 고르실 수 있고, 저녁이나 주말도 가능합니다.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h3>원고 완성</h3>
+          <p>인터뷰 완료 후 초고 완성까지 10일. 최종적인 검토는 저자가 직접 하셔야 합니다.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <h3>도서 출간</h3>
+          <p>편집·교열 및 디자인(본문·표지)을 거쳐 도서 제작을 진행합니다. 제작 완료 후 온라인 서점에 등록해 드립니다.</p>
+        </div>
+      </div>
+    </div>
+
+    <p class="steps-note caption">* 전체 일정은 4~8주입니다. 인터뷰 간격과 저자감수 기간에 따라 달라집니다. 책이 필요한 시점이 정해져 있다면 먼저 말씀해 주십시오. 역산해서 계획을 세워 드립니다.</p>
+  </div>
+</section>
+
+<!-- ============ 섹션 6 — 편집자 ============ -->
+<section class="divider" id="editor">
+  <div class="container">
+    <div class="banner-image banner-first" style="margin-bottom:2rem;">
+      <img src="images/이미지3.jpg" alt="편집자에 따라 책의 가치와 매력이 달라집니다">
+    </div>
+
+    <div class="editor-row">
+      <div class="editor-text">
+        <p class="editor-meta">글로그램의 편집자는 출판사 기획 편집 경력 20년 이상입니다. 단행본 148권 편집.<br>건강·의학 24권, 자기계발 33권, 경제경영 42권, 정치 8권, 기타 41권</p>
+
+        <div class="quote-block">
+          <p>“AI가 초고를 정리해도, 책의 진정한 가치는 윤문과 편집이 결정합니다.”</p>
+        </div>
+          <p class="steps-note caption">* 출간까지 담당편집자 1인이 책임집니다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 섹션 7 — 가격 ============ -->
+<section class="divider" id="pricing">
+  <div class="container">
+    <h2 class="section-title">가격을 공개합니다</h2>
+
+    <!-- PC/태블릿: 기존 3단 테이블 유지 -->
+    <table class="price-table desktop-only">
+      <thead>
+        <tr><th></th><th>실속형</th><th class="highlight">표준형</th><th>프리미엄형</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>가격</td><td class="plan-price">450만 원</td><td class="highlight plan-price">680만 원</td><td class="plan-price">870만 원</td></tr>
+        <tr><td>상담</td><td>설문지 작성 후 30분</td><td class="highlight">설문지 작성 후 30분</td><td>설문지 작성 후 30분</td></tr>
+        <tr><td>목차</td><td>1회 수정</td><td class="highlight">2회 수정</td><td>2회 수정</td></tr>
+        <tr><td>인터뷰</td><td>셀프 인터뷰 녹음<br>4~5시간</td><td class="highlight">편집자 화상 인터뷰<br>5~6시간</td><td>편집자 방문<br>6~8시간</td></tr>
+        <tr><td>편집</td><td>윤문 1회</td><td class="highlight">윤문 2회</td><td>윤문 2회</td></tr>
+        <tr><td>표지·내지</td><td>검증된 템플릿</td><td class="highlight">내지 템플릿 /<br>표지 맞춤 디자인</td><td>맞춤 디자인</td></tr>
+        <tr><td>전자책 등록</td><td>—</td><td class="highlight">포함</td><td>포함</td></tr>
+        <tr><td>칼럼 초안</td><td>—</td><td class="highlight">10편</td><td>10편</td></tr>
+        <tr><td>영상 주제 리스트</td><td>—</td><td class="highlight">—</td><td>10개</td></tr>
+        <tr><td>서점 소개자료</td><td>—</td><td class="highlight">포함</td><td>포함</td></tr>
+        <tr><td>서점 유통</td><td>—</td><td class="highlight">—</td><td>포함</td></tr>
+        <tr><td>초판 옵셋 인쇄</td><td>—</td><td class="highlight">500부 이상 별도 협의</td><td>500부 이상 별도 협의</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 모바일: 3단 요약 카드 + 펼침 상세 뷰 (index 형식) -->
+    <div class="mobile-pricing-wrap mobile-only">
+      
+      <!-- 1. 평상시 노출되는 3단 요약 카드 -->
+      <div id="mobile-mini-table" class="mini-pricing-table">
+        <div class="mini-col">
+          <h3>실속형</h3>
+          <p class="plan-price">450만 원</p>
+          <button type="button" class="btn-expand" onclick="showPlanDetail('detail-basic')" aria-label="실속형 상세보기">+</button>
+        </div>
+        <div class="mini-col highlight">
+          <h3>표준형</h3>
+          <p class="plan-price">680만 원</p>
+          <button type="button" class="btn-expand" onclick="showPlanDetail('detail-standard')" aria-label="표준형 상세보기">+</button>
+        </div>
+        <div class="mini-col">
+          <h3>프리미엄형</h3>
+          <p class="plan-price">870만 원</p>
+          <button type="button" class="btn-expand" onclick="showPlanDetail('detail-premium')" aria-label="프리미엄형 상세보기">+</button>
+        </div>
+      </div>
+
+      <!-- 2. '+' 클릭 시 활성화되는 개별 상세 카드 -->
+      <!-- 실속형 상세 -->
+      <div id="detail-basic" class="single-plan-view">
+        <h3 class="detail-title">실속형</h3>
+        <p class="detail-price">450만 원</p>
+        <dl>
+          <div><dt>상담</dt><dd>설문지 작성 후 30분</dd></div>
+          <div><dt>목차</dt><dd>1회 수정</dd></div>
+          <div><dt>인터뷰</dt><dd>셀프 인터뷰 녹음 4~5시간</dd></div>
+          <div><dt>편집</dt><dd>윤문 1회</dd></div>
+          <div><dt>표지·내지</dt><dd>검증된 템플릿</dd></div>
+          <div><dt>전자책 등록</dt><dd>—</dd></div>
+          <div><dt>칼럼 초안</dt><dd>—</dd></div>
+          <div><dt>영상 주제 리스트</dt><dd>—</dd></div>
+          <div><dt>서점 소개자료</dt><dd>—</dd></div>
+          <div><dt>서점 유통</dt><dd>—</dd></div>
+          <div><dt>초판 옵셋 인쇄</dt><dd>—</dd></div>
+        </dl>
+        <button type="button" class="btn-plan-close" onclick="hidePlanDetail()">접기 &minus;</button>
+      </div>
+
+      <!-- 표준형 상세 -->
+      <div id="detail-standard" class="single-plan-view">
+        <h3 class="detail-title">표준형</h3>
+        <p class="detail-price">680만 원</p>
+        <dl>
+          <div><dt>상담</dt><dd>설문지 작성 후 30분</dd></div>
+          <div><dt>목차</dt><dd>2회 수정</dd></div>
+          <div><dt>인터뷰</dt><dd>편집자 화상 인터뷰 5~6시간</dd></div>
+          <div><dt>편집</dt><dd>윤문 2회</dd></div>
+          <div><dt>표지·내지</dt><dd>내지 템플릿 / 표지 맞춤 디자인</dd></div>
+          <div><dt>전자책 등록</dt><dd>포함</dd></div>
+          <div><dt>칼럼 초안</dt><dd>10편</dd></div>
+          <div><dt>영상 주제 리스트</dt><dd>—</dd></div>
+          <div><dt>서점 소개자료</dt><dd>포함</dd></div>
+          <div><dt>서점 유통</dt><dd>—</dd></div>
+          <div><dt>초판 옵셋 인쇄</dt><dd>500부 이상 별도 협의</dd></div>
+        </dl>
+        <button type="button" class="btn-plan-close" onclick="hidePlanDetail()">접기 &minus;</button>
+      </div>
+
+      <!-- 프리미엄형 상세 -->
+      <div id="detail-premium" class="single-plan-view">
+        <h3 class="detail-title">프리미엄형</h3>
+        <p class="detail-price">870만 원</p>
+        <dl>
+          <div><dt>상담</dt><dd>설문지 작성 후 30분</dd></div>
+          <div><dt>목차</dt><dd>2회 수정</dd></div>
+          <div><dt>인터뷰</dt><dd>편집자 방문 6~8시간</dd></div>
+          <div><dt>편집</dt><dd>윤문 2회</dd></div>
+          <div><dt>표지·내지</dt><dd>맞춤 디자인</dd></div>
+          <div><dt>전자책 등록</dt><dd>포함</dd></div>
+          <div><dt>칼럼 초안</dt><dd>10편</dd></div>
+          <div><dt>영상 주제 리스트</dt><dd>10개</dd></div>
+          <div><dt>서점 소개자료</dt><dd>포함</dd></div>
+          <div><dt>서점 유통</dt><dd>포함</dd></div>
+          <div><dt>초판 옵셋 인쇄</dt><dd>500부 이상 별도 협의</dd></div>
+        </dl>
+        <button type="button" class="btn-plan-close" onclick="hidePlanDetail()">접기 &minus;</button>
+      </div>
+
+    </div>
+
+    <div class="bulk-block">
+      <p>제작</p>
+      <p class="steps-note caption">배포 계획에 따라 인쇄 부수를 늘릴 수 있습니다.</p>
+      <p class="steps-note caption">담당 편집자가 끝까지 제작 관리를 책임집니다.</p>
+    </div>
+
+    <div class="payment-block">
+      <p>결제 방식</p>
+      <p class="steps-note caption">계약 시 50%, 디자인 완료 시 50%.</p>
+      <p class="steps-note caption">세금계산서 발행도 가능합니다.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 섹션 8 — FAQ (7문항 전부 접힘) ============ -->
+<section class="divider" id="faq-section">
+  <div class="container">
+    <h2 class="section-title">자주 묻는 질문</h2>
+
+    <details class="faq">
+      <summary>직접 쓰지 않았는데 제 이름으로 내도 되나요?</summary>
+      <p>됩니다. 내용은 저자의 지식과 경험이고, 저희는 그것을 글의 형태로 정리하는 역할을 합니다. 저작권은 전적으로 저자에게 귀속되며 계약서에 명시합니다. 저자와 편집자의 협업은 출판에서 오래된 방식입니다.</p>
+    </details>
+    <details class="faq">
+      <summary>집필 과정에 대해 묻는다면 어떻게 답해야 하나요?</summary>
+      <p>“편집자와 함께 작업했다”고 답하시면 됩니다. 사실이고, 출판에서 일반적인 방식입니다. 필요하시면 예상 질문과 답변을 정리해 함께 드립니다.</p>
+    </details>
+    <details class="faq">
+      <summary>제 책이 이 사이트의 홍보에 쓰이나요?</summary>
+      <p>사전 동의 없이는 쓰지 않습니다. 동의하신 경우에도 범위를 두 단계 중에서 고르실 수 있습니다. 표지와 저자명 전부 공개, 표지만 공개입니다. 반대로 적극적으로 알리고 싶으신 경우에도 저희는 저자의 선택을 따릅니다. 보도자료 문안이나 소개 자료를 함께 준비해 드립니다.</p>
+    </details>
+    <details class="faq">
+      <summary>제 분야의 규제나 심의 기준을 아시나요?</summary>
+      <p>분야마다 표현에 제약이 있다는 것을 전제로 작업합니다. 의료는 의료광고 규정, 법조는 변호사 광고 규정, 공직 관련은 선거법이 각각 다르게 적용됩니다. 원고 단계에서 해당 기준에 맞는 표현 가이드라인을 적용하고, 판단이 필요한 부분은 미리 상의 드립니다. 다만 최종 판단과 책임은 저자에게 있습니다.</p>
+    </details>
+    <details class="faq">
+      <summary>정해진 날짜가 있는데 맞출 수 있나요?</summary>
+      <p>일정을 먼저 말씀해 주시면 역산해서 계획을 세웁니다. 다만 ISBN 발급과 서점 입점은 저희가 통제할 수 없는 구간이므로, 여유를 두고 시작하시는 것이 안전합니다. 특히 법령상 특정 시점 이후에 제약이 생기는 경우라면 상담에서 함께 확인하겠습니다.</p>
+    </details>
+    <details class="faq">
+      <summary>내용에 오류가 있으면 어떻게 되나요?</summary>
+      <p>저희가 1차 사실 확인을 하고, 최종 확인은 반드시 저자가 하십니다. 이 과정 없이 출간 하지 않습니다. 전문 영역의 판단은 저자의 몫이며, 저희는 그 판단이 정확한지 확인 작업을 돕습니다.</p>
+    </details>
+    <details class="faq">
+      <summary>서점에 실제로 들어가나요?</summary>
+      <p>들어갑니다. ISBN을 발급받아 주요 온라인 서점에 전자책을 등록합니다. 선택하신 요금제 중 프리미엄형/표준형은 별도 협의 후 종이책으로 대량 제작하여 오프라인 서점에 유통 가능합니다. 다만 비매품으로만 제작하는 것도 가능합니다.</p>
+    </details>
+  </div>
+</section>
+
+<!-- ============ 섹션 9 — 신청 ============ -->
+<section class="divider" id="apply">
+  <div class="container">
+
+    <div class="banner-image banner-first" style="margin-bottom:1.5rem;">
+      <img src="images/이미지4.jpg" alt="책쓰기 고민, 밀도 높은 30분 상담">
+    </div>
+
+    <div class="narrow">
+      <p>어떤 경험과 지식이 책이 될 수 있는지,<br>어떤 목차로 정리해야 할지 안내합니다.</p>
+      <p style="font-weight:700;">♣ 상담 후 계약을 강요하지 않습니다.</p>
+    </div>
+
+    <!-- 구글 설문조사 폼 링크: 아래 GOOGLE_FORM_URL 자리에 실제 링크를 넣으십시오 -->
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLScimQ_r7143afdgve-WTgVrqGINc3JV3TKwcCvbPRSCX7b0RA/viewform" target="_blank" rel="noopener" id="apply-cta" class="btn-primary" style="margin-top:2rem;">무료 상담 신청</a>
+  </div>
+</section>
+
+<!-- ============ 푸터 ============ -->
+<footer style="border-top: 1px solid var(--rule);">
+  <div class="container">
+    <p class="biz">
+      주식회사 이로츠 · 대표 김훈태<br>
+      사업자등록번호 381-86-01372<br>
+      서울시 중구 서애로1길 11, B109호<br>
+      070-8080-5238 · yrots100@gmail.com
+    </p>
+    <a href="privacy.html" class="privacy-link">개인정보처리방침</a>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---- 세션당 1회 이벤트 발생 ---- */
+  var fire = function(name, params){
+    if (sessionStorage.getItem(name)) return;
+    sessionStorage.setItem(name, '1');
+    if (typeof gtag === 'function') gtag('event', name, params || {});
+  };
+
+  /* ---- 스크롤 진행바 ---- */
+  var progressEl = document.getElementById('progress');
+  window.addEventListener('scroll', function(){
+    var h = document.documentElement;
+    var pct = h.scrollTop / (h.scrollHeight - h.clientHeight) * 100;
+    progressEl.style.width = pct + '%';
+  }, { passive: true });
+
+  /* ---- 섹션 도달 이벤트 (view_source / pass_source / view_editor / view_price) ---- */
+  var sectionEvents = [
+    { id: 'source', name: 'view_source', threshold: 0.5 },
+    { id: 'burden', name: 'pass_source', threshold: 0.1 },
+    { id: 'editor', name: 'view_editor', threshold: 0.1 },
+    { id: 'pricing', name: 'view_price', threshold: 0.1 }
+  ];
+  sectionEvents.forEach(function(cfg){
+    var el = document.getElementById(cfg.id);
+    if (!el) return;
+    var observer = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if (entry.isIntersecting){
+          fire(cfg.name);
+          observer.unobserve(el);
+        }
+      });
+    }, { threshold: cfg.threshold });
+    observer.observe(el);
+  });
+
+  /* ---- FAQ 열람 이벤트 (문항별 1회) ---- */
+  document.querySelectorAll('details.faq').forEach(function(d, i){
+    d.addEventListener('toggle', function(){
+      if (d.open){
+        fire('faq_open_' + i, { question: d.querySelector('summary').textContent });
+      }
+    });
+  });
+
+  /* ---- 신청 CTA 클릭 이벤트 (구글 폼으로 이동 — 폼 제거로 form_start/form_submit 대체) ---- */
+  document.getElementById('apply-cta').addEventListener('click', function(){
+    fire('apply_click', { source: 'section' });
+  });
+  
+})();
+
+/* 모바일 가격표 뷰 전환 함수 */
+function showPlanDetail(detailId) {
+  document.getElementById('mobile-mini-table').style.display = 'none';
+  
+  document.querySelectorAll('.single-plan-view').forEach(function(card) {
+    card.classList.remove('active');
+  });
+  var target = document.getElementById(detailId);
+  if (target) {
+    target.classList.add('active');
+  }
+}
+
+function hidePlanDetail() {
+  // 1. 열려있는 큰 표 닫기
+  document.querySelectorAll('.single-plan-view').forEach(function(card) {
+    card.classList.remove('active');
+  });
+  
+  // 2. 작은 3단 표 다시 표시
+  var miniTable = document.getElementById('mobile-mini-table');
+  if (miniTable) {
+    miniTable.style.display = 'flex';
+  }
+
+  // 3. 섹션 7 상단("가격을 공개합니다")으로 화면 이동
+  var pricingSection = document.getElementById('pricing');
+  if (pricingSection) {
+    pricingSection.scrollIntoView({ behavior: 'auto', block: 'start' });
+  }
+}
+</script>
+
+</body>
+</html>
