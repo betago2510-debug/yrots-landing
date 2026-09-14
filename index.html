@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<meta name="supported-color-schemes" content="light">
 <title>글로그램 / GLOGRAM</title>
 <meta name="description" content="의사, 한의사, 변호사, 정치인 등 전문직의 소중한 경험을 경력 20년차 이상의 편집자가 만듭니다. 인터뷰 후 원고 집필, 윤문, 편집 디자인 책임지고 진행합니다. 자비 출판, 원고 대필.">
 <meta name="theme-color" content="#F4EDE1">
@@ -47,8 +49,47 @@
 }
 
 /* ============ 1. 리셋 ============ */
+/* ============ 다크모드 강제 반전 방지 (최상단 추가) ============ */
+:root {
+  color-scheme: light !important;
+}
+
+/* 시스템이 다크모드일 때도 라이트모드 색상을 강제로 유지시킴 */
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: light !important;
+  }
+  html {
+    background-color: #F4EDE1 !important;
+    color: #5A554D !important;
+    color-scheme: light !important;
+  }
+  body {
+    background-color: var(--paper) !important;
+    color: var(--ink) !important;
+  }
+  /* 제목 및 본문 색상 고정 */
+  h1, h2, h3 {
+    color: var(--heading) !important;
+  }
+  p, li, dt, dd {
+    color: inherit;
+  }
+  /* 기존 3번 섹션(색 반전 블록) 고정 유지 */
+  .invert {
+    background-color: var(--ink-bg) !important;
+    color: var(--paper) !important;
+  }
+  .invert h2 { color: var(--paper) !important; }
+  .invert p, .invert td, .invert dd { color: rgba(255,255,255,0.82) !important; }
+}
+
+/* ============ 1. 리셋 ============ */
 *, *::before, *::after{ box-sizing:border-box; }
-html{ -webkit-text-size-adjust:100%; }
+html{ 
+  -webkit-text-size-adjust:100%; 
+  color-scheme: light !important;
+}
 body{
   margin:0;
   background:var(--paper);
@@ -475,8 +516,8 @@ footer .privacy-link{ display:inline-block; margin-top:1rem; font-size:13px; tex
         </div>
 
         <div class="editor-fact">
-          <p>상담 후 책임편집자 1인이<br>배정됩니다.</p>
-          <p>책 출간까지 한 사람이<br>책임집니다.</p>
+          <p>상담 후 책임편집자 1인이 배정됩니다.</p>
+          <p>책 출간까지 한 사람이 책임집니다.</p>
         </div>
       </div>
     </div>
