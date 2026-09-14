@@ -88,11 +88,13 @@
 *, *::before, *::after{ box-sizing:border-box; }
 html{ 
   -webkit-text-size-adjust:100%; 
-  color-scheme: light !important;
+  color-scheme: light;
+  background-image: linear-gradient(0deg, #F4EDE1 0%, #F4EDE1 100%) !important;
+  background-attachment: fixed;
 }
 body{
   margin:0;
-  background:var(--paper);
+  background: transparent !important;
   color:var(--ink);
   font-family:var(--font-body);
   font-weight:600;
@@ -172,7 +174,8 @@ h2.section-title{ font-size:24px; line-height:1.4; margin-bottom:1.2rem; }
 
 /* ============ 8. 원천 콘텐츠 — 색 반전 블록 (섹션 3 유일) ============ */
 .invert{
-  background:var(--ink-bg);
+  background: transparent !important;
+  background-image: linear-gradient(0deg, #14212B 0%, #14212B 100%) !important;
   color:var(--paper);
   padding:3rem 0;
   margin:0;
