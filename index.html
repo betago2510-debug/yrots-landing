@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light only">
 <title>글로그램 / GLOGRAM</title>
 <meta name="description" content="의사, 한의사, 변호사, 정치인 등 전문직의 소중한 경험을 경력 20년차 이상의 편집자가 만듭니다. 인터뷰 후 원고 집필, 윤문, 편집 디자인 책임지고 진행합니다. 자비 출판, 원고 대필.">
 <meta name="theme-color" content="#F4EDE1">
@@ -48,7 +49,10 @@
 
 /* ============ 1. 리셋 ============ */
 *, *::before, *::after{ box-sizing:border-box; }
-html{ -webkit-text-size-adjust:100%; }
+html{ 
+  -webkit-text-size-adjust:100%; 
+  color-scheme: light; /* 다크 모드 강제 반전 방지 */
+}
 body{
   margin:0;
   background:var(--paper);
